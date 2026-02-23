@@ -74,12 +74,16 @@ def run_interactive():
     print("--- Диагностика болезней комнатных растений ---")
 
     # Сбор фактов
-    if ask_question("Листья вянут?") == 'да':
+    if ask_question("Листья вянут / желтеют снизу?") == 'да':
         engine.declare(PlantFact(leaves_wilt='да'))
-        if ask_question("Почва постоянно влажная?") == 'да':
+        engine.declare(PlantFact(yellow_bottom_leaves='да'))
+        if ask_question("Почва долго не просыхает / постоянно влажная?") == 'да':
             engine.declare(PlantFact(soil_wet='да'))
+            engine.declare(PlantFact(soil_wet_long='да'))
             if ask_question("Наблюдается потемнение корней?") == 'да':
                 engine.declare(PlantFact(roots_dark='да'))
+            elif ask_question("Неприятный запах из горшка отсутствует?") == 'да':
+                engine.declare(PlantFact(no_bad_smell='да'))
 
     if ask_question("Есть сухие светлые пятна на листьях?") == 'да':
         engine.declare(PlantFact(dry_spots='да'))
