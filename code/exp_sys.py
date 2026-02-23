@@ -1,9 +1,12 @@
 import collections.abc
-collections.Mapping = collections.abc.Mapping
 from experta import *
+
+collections.Mapping = collections.abc.Mapping
+
 
 class PlantFact(Fact):
     pass
+
 
 class PlantExpertSystem(KnowledgeEngine):
     def __init__(self):
@@ -19,17 +22,20 @@ class PlantExpertSystem(KnowledgeEngine):
     @Rule(PlantFact(leaves_wilt='да'), PlantFact(soil_wet='да'), PlantFact(roots_dark='да'))
     def diagnose_root_rot(self):
         self.fired_rules.append("Правило 1: Диагностика корневой гнили")
-        self.diagnoses.append("Корневая гниль. Решение: Срочно извлечь растение, удалить загнившие корни, обработать фунгицидом.")
+        self.diagnoses.append(
+            "Корневая гниль. Решение: Срочно извлечь растение, удалить загнившие корни, обработать фунгицидом.")
 
     @Rule(PlantFact(white_plaque='да'), PlantFact(high_humidity='да'), PlantFact(bad_ventilation='да'))
     def diagnose_powdery_mildew(self):
         self.fired_rules.append("Правило 2: Мучнистая роса")
-        self.diagnoses.append("Мучнистая роса. Решение: Удалить поражённые листья, обработать фунгицидом, снизить влажность.")
+        self.diagnoses.append(
+            "Мучнистая роса. Решение: Удалить поражённые листья, обработать фунгицидом, снизить влажность.")
 
     @Rule(PlantFact(yellow_leaves='да'), PlantFact(green_veins='да'), PlantFact(in_shade='да'))
     def diagnose_chlorosis(self):
         self.fired_rules.append("Правило 3: Хлороз из-за нехватки света")
-        self.diagnoses.append("Хлороз. Решение: Переместить растение в освещённое место, внести железосодержащие удобрения.")
+        self.diagnoses.append(
+            "Хлороз. Решение: Переместить растение в освещённое место, внести железосодержащие удобрения.")
 
     @Rule(PlantFact(dry_spots='да'), PlantFact(direct_sun='да'))
     def diagnose_leaf_burn(self):
@@ -39,12 +45,14 @@ class PlantExpertSystem(KnowledgeEngine):
     @Rule(PlantFact(web_on_leaves='да'), PlantFact(light_dots='да'), PlantFact(dry_air='да'))
     def diagnose_spider_mite(self):
         self.fired_rules.append("Правило 5: Поражение паутинным клещом")
-        self.diagnoses.append("Паутинный клещ. Решение: Изолировать растение, обработать акарицидом, повысить влажность.")
+        self.diagnoses.append(
+            "Паутинный клещ. Решение: Изолировать растение, обработать акарицидом, повысить влажность.")
 
     @Rule(PlantFact(yellow_bottom_leaves='да'), PlantFact(soil_wet_long='да'), PlantFact(no_bad_smell='да'))
     def diagnose_overwatering(self):
         self.fired_rules.append("Правило 8: Переувлажнение без гнили")
         self.diagnoses.append("Переувлажнение. Решение: Сократить полив, улучшить дренаж.")
+
 
 def ask_question(question_text):
     while True:
@@ -52,6 +60,7 @@ def ask_question(question_text):
         if answer in ['да', 'нет']:
             return answer
         print("Ошибка ввода. Пожалуйста, введите 'да' или 'нет'.")
+
 
 def run_interactive():
     engine = PlantExpertSystem()
@@ -88,22 +97,24 @@ def run_interactive():
     else:
         print("Болезнь не распознана.")
 
+
 def run_test_scenarios():
     print("--- Запуск сценариев верификации ---")
     engine = PlantExpertSystem()
-    
+
     print("\nТест 1 (Use Case: Паутинный клещ):")
     engine.reset()
     engine.declare(PlantFact(web_on_leaves='да'), PlantFact(light_dots='да'), PlantFact(dry_air='да'))
     engine.run()
     for d in engine.diagnoses: print(f"-> {d}")
-    
+
     print("\nТест 2 (Use Case: Ожог листьев):")
     engine.reset()
     engine.declare(PlantFact(dry_spots='да'), PlantFact(direct_sun='да'))
     engine.run()
     for d in engine.diagnoses: print(f"-> {d}")
     print("------------------------------------\n")
+
 
 if __name__ == "__main__":
     run_test_scenarios()
